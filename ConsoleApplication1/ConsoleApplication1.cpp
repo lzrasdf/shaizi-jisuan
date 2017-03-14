@@ -99,8 +99,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				for (int j = 0; j < 6; j++){
 					bool _need = true;//默认要减少0.5
-					for (int k = 0; k < 3; k++){
-						if (AllTable[i][k] == j + 1){
+					for (int l = 0; l < 3; l++){
+						if (AllTable[k][l] == j + 1){
 							_need = false;
 							break;
 						}
@@ -109,41 +109,65 @@ int _tmain(int argc, _TCHAR* argv[])
 						_result[j] = _result[j] - 0.5;
 					}
 				}
+			}
 
-				for (int j = 0; j < 6; j++){
-					float _maxdif = fabs(_result[j]);
-					if (_maxdif > fabs(Table_diff[j])){
-						Table_diff[j] = _result[j];
-							cout << _result[j] << "...点数为" << j+1 << endl;
-					}
+			for (int j = 0; j < 6; j++){
+				float _maxdif = _result[j];
+				if (_maxdif < 0){
+					_maxdif = (-1)* _maxdif;
 				}
+				float _cursul = Table_diff[j];
+				if (_cursul < 0){
+					_cursul = _cursul * (-1);
+				}
+				if (_maxdif > _cursul){
+					Table_diff[j] = _result[j];
+				}
+				//cout << _result[j] << "...点数为" << j + 1 << endl;
 			}
 			//----------------------------------------------------
 			for (int j = 0; j < 6; j++){
 				if (Table_isbuying[j] == true){
-					if (_result[j] > (Table_buyingLevel[j] - 1) * (-3) - 1.5){
+					float _temp = (Table_buyingLevel[j] - 1) * (-3) - 1.5;
+					float _curre = _result[j];
+					if (_curre > _temp){
 						//获得一次赢利点
 						Num_get = Num_get + 1;
-						Table_buyingLevel[j] = Table_buyingLevel[j] - 1;
-						if (Table_buyingLevel[j] = 0){
+						//cout << j ;
+						float _temp1 = _result[j];
+						if (_temp1 < 0){
+							_temp1 = _temp1 * (-1);
+						}
+						Table_buyingLevel[j] = floor(_temp1 / 3);
+						if (Table_buyingLevel[j] == 0){
 							//等级一的话 停止购买
 							Table_isbuying[j] = false;
 						}
 					}
 					else{
 						//检查是否加深
-						if (_result[j] < Table_buyingLevel[j] * (-3)){
-							Table_buyingLevel[j] = Table_buyingLevel[j] + 1;
+						if (_result[j] < (Table_buyingLevel[j]+1) * (-3)){
+							float _temp = _result[j];
+							if (_temp < 0){
+								_temp = _temp * (-1);
+							}
+							Table_buyingLevel[j] = floor(_temp / 3);
+							
 						}
 					}
 				}
 				else{
 					if (_result[j] < (-3)){
 						Table_isbuying[j] = true;
-						Table_buyingLevel[j] = floor(Table_isbuying[j] / 3);
+						float _temp = _result[j];
+						if (_temp < 0){
+							_temp = _temp * (-1);
+						}
+						Table_buyingLevel[j] = floor(_temp / 3);
 					}
 				}
 			}
+			//cout << "赢利点分割线" << endl;
 		}
 		cout << "----------下方输出数据-------------" << endl;
 		//输出数据
