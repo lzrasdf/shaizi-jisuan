@@ -109,10 +109,12 @@ int _tmain(int argc, _TCHAR* argv[])
 						_result[j] = _result[j] - 0.5;
 					}
 				}
+
 				for (int j = 0; j < 6; j++){
 					float _maxdif = fabs(_result[j]);
 					if (_maxdif > fabs(Table_diff[j])){
 						Table_diff[j] = _result[j];
+							cout << _result[j] << "...µãÊýÎª" << j+1 << endl;
 					}
 				}
 			}
